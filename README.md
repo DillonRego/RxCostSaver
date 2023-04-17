@@ -39,8 +39,8 @@ Endpoints:
 Get_endpoints
 
 /claims
-     Inputs: sort (top or bottom, limit, offset
 
+     Inputs: sort (top or bottom, limit, offset
      This endpoint will return a list of drugs for each drug it returns the following aggregated for all manufacturers:
      total_spending : a list of total yearly spending on that drug
      Avg_spending : a list of tuples containing average spending by claims and by units
@@ -50,8 +50,8 @@ Get_endpoints
      You can change the sort of the list with the sort input, change how many results with the limit input and change where the list begins with offset
 
 /manufacturers
-      inputs : generic_name, brand_name
 
+      Inputs : generic_name, brand_name
       This endpoint returns a list of manufacturers that manufacture a given drug. For each manufacturer it returns:
       name : the name of the manufacturer
       year : the year production began for that drug by a given manufacturer
@@ -60,12 +60,13 @@ Get_endpoints
       You can filter for only manufacturers that make a given generic_name, brand_name or both
 
 /gross_cost:
+
       Inputs: Manufacturer_Name, total_spending, year
       Output: Cost medicaid spent for a given company
-
       This endpoint returns the total reimbursement medicaid paid to a given manufacturer for a given year 
 
 /change_average_spending:
+
       Inputs: drug_type(Generic Name), year_1, year_2
       Output: List of various Generic Name Drug with their change in rate for average spending over the year
 
@@ -73,11 +74,13 @@ Get_endpoints
 
 Request_endpoints:
 /add_entry:
+
       Inputs: brnd_name, gnrc_name, tot_mftr, tot_spending, tot_dsg_unit tot_claims, avg_spnd_per_dsg_unt_wghtd, avg_spnd_per_clm, outlier_flag, year
 
       This endpoint will insert a new row into the database with the given information, if the year is not specified it will default to the earliest year not already         filled. If a year is given it will only fill in the drug data for the given year, (all inputs after tot_mftr) 
 
 /delete_entry
+
       Inputs: brnd_name, gnrc_name, year
 
       This endpoint will delete entries under the given brand name and generic drug name. If no year is specified it will automatically delete all for that entry, if a       year is given it will only delete information for that calendar year.
