@@ -72,7 +72,7 @@ Get_endpoints
 
       This endpoint returns a tupled list showing the change in rate of average spending over the year for a given drug produced by all the manufacturers
 
-Request_endpoints:
+Request_endpoints
 
 /add_entry:
 
