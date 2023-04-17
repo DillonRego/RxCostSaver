@@ -37,6 +37,7 @@ The application returns a page with information on every drug a manufacturer has
 Endpoints:
 
 Get_endpoints
+
 /claims
 Inputs: sort (top or bottom, limit, offset
 
