@@ -51,6 +51,7 @@ You can change the sort of the list with the sort input, change how many results
 
 /manufacturers
 inputs : generic_name, brand_name
+
 This endpoint returns a list of manufacturers that manufacture a given drug. For each manufacturer it returns:
 name : the name of the manufacturer
 year : the year production began for that drug by a given manufacturer
