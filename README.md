@@ -73,6 +73,7 @@ Get_endpoints
       This endpoint returns a tupled list showing the change in rate of average spending over the year for a given drug produced by all the manufacturers
 
 Request_endpoints:
+
 /add_entry:
 
       Inputs: brnd_name, gnrc_name, tot_mftr, tot_spending, tot_dsg_unit tot_claims, avg_spnd_per_dsg_unt_wghtd, avg_spnd_per_clm, outlier_flag, year
