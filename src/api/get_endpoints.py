@@ -17,12 +17,12 @@ def get_claims():
     Avg_spending : a list of tuples containing average spending by claims and by units
     total_dsg : a list of yearly dosage units
     outlier_years : a list of years in which the drug was considered an outlier
-
     """
     
     
-@router.get("/manufacturers/", tags=["manufacturers"])
-def get_manufacturers():
+    
+@router.get("/manufacturers/{id}", tags=["manufacturers"])
+def get_manufacturers(id: int):
     """
     This endpoint returns a list of manufacturers that manufacture a given drug. For each manufacturer it returns:
     name : the name of the manufacturer
@@ -32,6 +32,17 @@ def get_manufacturers():
     
     You can filter for only manufacturers that make a given generic_name, brand_name or both
     """
+    sql = sqlalchemy.text("""
+            select manufacturer_name, min(year) as production_year, generic_name, brand_name
+            from manufacturer join drug on manufacturer.manufacturer_id = drug.manufacturer_id
+            join drug_year on drug.drug_id = drug_year.drug_id
+            where drug.drug_id = id
+            group by manufacturer_name, generic_name, brand_name
+            order by production_year asc
+        """)
+    with db.engine.connect() as conn:
+        result = conn.execute(sqlalchemy.text(sql)
+   
 
 @router.get("/gross_cost/{id}", tags = ["gross_cost"])
 def get_manufacturer_gross_cost(id: int):
@@ -50,8 +61,8 @@ def get_manufacturer_gross_cost(id: int):
         result = conn.execute(sqlalchemy.text(sql)
    
     
-@router.get("/change_avg_spend/{name}", tags = ["change_avg_spend"])
-def change_avg_spend(name: string):
+@router.get("/change_avg_spend/", tags = ["change_avg_spend"])
+def change_avg_spend():
     """
     This endpoint returns a tupled list showing the change in
     average spending over the year for a given drug produced by all the manufacturers  
