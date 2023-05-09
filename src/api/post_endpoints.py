@@ -32,7 +32,7 @@ def add_entry(
   json = []
   with db.engine.connect() as conn:
     result = conn.execute(sqlalchemy.text(sql), drug_id)
-    if result.rowcount == 0
+    if result.rowcount == 0:
       raise HTTPException(status_code=404, detail="drug not found")
   year = max(year, result.year)
   post_values = {'year' : year, 
