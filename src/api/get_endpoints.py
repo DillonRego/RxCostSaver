@@ -1,9 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from src import database as db
-from fastapi.params import Query
-from pydantic import BaseModel
 import sqlalchemy
-from sqlalchemy import select
 
 router = APIRouter()
 
