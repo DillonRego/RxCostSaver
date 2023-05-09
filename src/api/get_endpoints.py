@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException
 from src import database as db
 from fastapi.params import Query
 from pydantic import BaseModel
-from src.datatypes import Drug, Manufacturer, Gross_Cost, Drug_year
 import sqlalchemy
 from sqlalchemy import select
 
