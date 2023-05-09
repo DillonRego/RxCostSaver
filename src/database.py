@@ -1,27 +1,23 @@
+import sqlalchemy
 import os
 import dotenv
-import sqlalchemy
-import csv  
-from src.datatypes import Drug, Manufacturer, Gross_Cost, Drug_year
-import io   
 
-# DO NOT CHANGE THIS TO BE HARDCODED. ONLY PULL FROM ENVIRONMENT VARIABLES.
-dotenv.load_dotenv()
-supabase_api_key = os.environ.get("SUPABASE_API_KEY")
-supabase_url = os.environ.get("SUPABASE_URL")
+def database_connection_url():
+    dotenv.load_dotenv()
+    DB_USER: str = os.environ.get("POSTGRES_USER")
+    DB_PASSWD = os.environ.get("POSTGRES_PASSWORD")
+    DB_SERVER: str = os.environ.get("POSTGRES_SERVER")
+    DB_PORT: str = os.environ.get("POSTGRES_PORT")
+    DB_NAME: str = os.environ.get("POSTGRES_DB")
+    return f"postgresql://{DB_USER}:{DB_PASSWD}@{DB_SERVER}:{DB_PORT}/{DB_NAME}"
 
-if supabase_api_key is None or supabase_url is None:
-    raise Exception(
-        "You must set the SUPABASE_API_KEY and SUPABASE_URL environment variables."
-    )
+# Create a new DB engine based on our connection string
+engine = sqlalchemy.create_engine(database_connection_url())
 
-# END PLACEHOLDER CODE
+# Use reflection to derive table schema. You can also code this in manually.
+metadata_obj = sqlalchemy.MetaData()
+drug = sqlalchemy.Table("drug", metadata_obj, autoload_with=engine)
 
+drug_year = sqlalchemy.Table("drug_year", metadata_obj, autoload_with=engine)
 
-def try_parse(type, val):
-    try:
-        return type(val)
-    except ValueError:
-        return None
-    
-#with open for the database?
+maunfacturer = sqlalchemy.Table("manufacturer", metadata_obj, autoload_with=engine)

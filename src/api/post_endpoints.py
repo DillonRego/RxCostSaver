@@ -5,6 +5,7 @@ from src.datatypes import Drug, Manufacturer, Gross_Cost, Drug_year
 from fastapi.params import Query
 from pydantic import BaseModel
 import sqlalchemy
+from sqlalchemy import create_engine
 
 router = APIRouter()
 
