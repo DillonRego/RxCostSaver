@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 
 router = APIRouter()
 
-@router.post("/add_entry", tags=["add_entry"])
+@router.post("/add_entry", tags=["entry"])
 def add_entry(
   year: int = 2017,
   drug_id: int = 1,
@@ -41,7 +41,7 @@ def add_entry(
   with db.engine.connect() as conn:
     post_result = conn.execute(db.drug.insert().values(post_values))
     
-@router.post("/delete_entry", tags=["delete_entry"])
+@router.post("/delete_entry", tags=["entry"])
 def delete_entry(
   year: int = -1,
   drug_id: int = -1):
