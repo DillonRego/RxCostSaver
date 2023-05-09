@@ -61,6 +61,8 @@ def delete_entry(
   first_sql = """select drug_id from drug_year where drug_id = {}""", drug_id
   with db.engine.connect() as conn:
     test_result = conn.execute(sqlalchemy.text(first_sql))
+    if test_result.rowcount == 0:
+      raise HTTPException(status_code=404, detail="invalid drug_id")
 
   sql = """
   delete from drug_year
