@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException
 from src import database as db
 from fastapi.params import Query
 from pydantic import BaseModel
-from src.datatypes import Drug, Manufacturer, Gross_Cost, Drug_year
 import sqlalchemy
 
 router = APIRouter()
@@ -17,12 +16,11 @@ def get_claims():
     Avg_spending : a list of tuples containing average spending by claims and by units
     total_dsg : a list of yearly dosage units
     outlier_years : a list of years in which the drug was considered an outlier
-
     """
     
     
 @router.get("/manufacturers/", tags=["manufacturers"])
-def get_claims():
+def get_():
     """
     This endpoint returns a list of manufacturers that manufacture a given drug. For each manufacturer it returns:
     name : the name of the manufacturer
@@ -43,5 +41,5 @@ def get_gross_cost():
 def change_avg_spend():
     """
     This endpoint returns a tupled list showing the change in
-    rate of average spending over the year for a given drug produced by all the manufacturers  
+    average spending over the year for a given drug produced by all the manufacturers  
     """
