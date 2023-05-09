@@ -68,6 +68,7 @@ def get_manufacturers(id: int):
         """)
     with db.engine.connect() as conn:
         result = conn.execute(sqlalchemy.text(sql))
+    return result
 
 
 @router.get("/gross_cost/{id}", tags = ["gross_cost"])
@@ -88,6 +89,7 @@ def get_manufacturer_gross_cost(id: int):
         """)
     with db.engine.connect() as conn:
         result = conn.execute(sqlalchemy.text(sql))
+        return result
     
 @router.get("change_avg_spend", tags = ["change_avg_spend"])
 def change_avg_spend(brand_nam):
