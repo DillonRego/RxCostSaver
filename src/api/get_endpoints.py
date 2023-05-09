@@ -7,8 +7,6 @@ from sqlalchemy import select
 
 router = APIRouter()
 
-#maybe do SQL?
-
 @router.get("/claims/", tags=["claims"])
 def get_claims(year):
     """

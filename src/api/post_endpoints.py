@@ -8,10 +8,10 @@ from sqlalchemy import create_engine
 
 router = APIRouter()
 
-@router.post("/add_entry", tags=["entry"])
+@router.post("/add_entry/{drug_id}", tags=["entry"])
 def add_entry(
   year: int = 2017,
-  drug_id: int = 1,
+  drug_id: int = -1,
   total_dosge_units: float = 0,
   total_claims: float = 0,
   avg_spending_per_claim: float = 0,
@@ -20,7 +20,7 @@ def add_entry(
   outlier: bool = True):
 
   """
-  This endpoint will insert a new row into the drug_year database with the given information, if the year is not specified it will default to the earliest year not already 
+  This endpoint will insert a new row into the drug_year database with the given information, if the year is not specified it will default to the earliest recorded year not already 
   filled. If a year is given it will only fill in the drug data for the given year, (all inputs after tot_mftr) 
   """
   sql = """ 
@@ -28,11 +28,14 @@ def add_entry(
   from drug_year
   where drug_id = :x"""
 
-  post_result = {}
+  post_result = []
+  json = []
   with db.engine.connect() as conn:
     result = conn.execute(sqlalchemy.text(sql), drug_id)
+    if result.rowcount == 0
+      raise HTTPException(status_code=404, detail="drug not found")
   year = max(year, result.year)
-  post_values = {'year' : year, 'drug_id': drug_id, 
+  post_values = {'year' : year, 
   'total_dosge_units': total_dosge_units, 'total_claims': total_claims, 
   'avg_spending_per_claim' : avg_spending_per_claim, 
   'avg_spending_per_dosage_weighted' : avg_spending_per_dosage_weighted,
@@ -40,8 +43,15 @@ def add_entry(
   'outlier' : outlier}
   with db.engine.connect() as conn:
     post_result = conn.execute(db.drug.insert().values(post_values))
-    
-@router.post("/delete_entry", tags=["entry"])
+    if post_result.rowcount == 0:
+      raise HTTPException(status_code=404, detail="drug not found")
+    for row in post_result:
+      json.append({
+        'rows': row.post_result
+      })
+  return json
+
+@router.post("/delete_entry/{drug_id}", tags=["entry"])
 def delete_entry(
   year: int = -1,
   drug_id: int = -1):
@@ -61,6 +71,13 @@ def delete_entry(
     additional_string = ""
   else:
     additional_string = " and year = {}", year 
-
+  json = []
   with db.engine.connect() as conn:
-    test_result = conn.execute(sqlalchemy.text(sql), additional_string)
+    result = conn.execute(sqlalchemy.text(sql), additional_string)
+    if result.rowcount == 0:
+      raise HTTPException(status_code=404, detail="drug not found")
+    for row in result:
+      json.append({
+        'rows': row.post_result
+      })
+  return json
