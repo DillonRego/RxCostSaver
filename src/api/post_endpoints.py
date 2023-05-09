@@ -48,13 +48,18 @@ def delete_entry(
   This endpoint will delete entries under the drug id. If no year is specified it will automatically delete all for that entry,
   if a year is given it will only delete information for that calendar year.
   """
-  if(year == -1)
-    { 
-    sql = """
-    delete from drug_year
-    where """
-    }
-  
- 
+  first_sql = """select drug_id from drug_year where drug_id = {}""", drug_id
+  with db.engine.connect() as conn:
+    test_result = conn.execute(sqlalchemy.text(first_sql))
 
-       
+  sql = """
+  delete from drug_year
+  where drug_id = :y"""
+
+  if year == -1:
+    additional_string = ""
+  else:
+    additional_string = " and year = {}", year 
+
+  with db.engine.connect() as conn:
+    test_result = conn.execute(sqlalchemy.text(sql), additional_string)
