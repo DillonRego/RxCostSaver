@@ -22,7 +22,7 @@ def get_claims():
     
     
 @router.get("/manufacturers/", tags=["manufacturers"])
-def get_claims():
+def get_manufacturers():
     """
     This endpoint returns a list of manufacturers that manufacture a given drug. For each manufacturer it returns:
     name : the name of the manufacturer
@@ -33,15 +33,26 @@ def get_claims():
     You can filter for only manufacturers that make a given generic_name, brand_name or both
     """
 
-@router.get("/gross_cost", tags = ["gross_cost"])
-def get_gross_cost():
+@router.get("/gross_cost/{id}", tags = ["gross_cost"])
+def get_manufacturer_gross_cost(id: int):
     """
     This endpoint returns the total reimbursement medicaid paid to a given manufacturer for a given year 
     """
+    sql = sqlalchemy.text("""
+            select manufacturer.manufacturer_name, sum(total_spending) as medicaid_paid, year
+            from manufacturer join drug on manufacturer.manufacturer_id = drug.manufacturer_id
+            join drug_year on drug.drug_id = drug_year.drug_id
+            where manufacturer.manufacturer_id = id
+            group by year, manufacturer.manufacturer_name
+            order by year asc
+        """)
+    with db.engine.connect() as conn:
+        result = conn.execute(sqlalchemy.text(sql)
+   
     
-@router.get("change_avg_spend", tags = ["change_avg_spend"])
-def change_avg_spend():
+@router.get("/change_avg_spend/{name}", tags = ["change_avg_spend"])
+def change_avg_spend(name: string):
     """
     This endpoint returns a tupled list showing the change in
-    rate of average spending over the year for a given drug produced by all the manufacturers  
+    average spending over the year for a given drug produced by all the manufacturers  
     """
