@@ -16,8 +16,10 @@ def add_entry(
   outlier: bool = True):
 
   """
-  This endpoint will insert a new row into the drug_year database with the given information, if the year is not specified it will default to the earliest recorded year not already 
-  filled. If a year is given it will only fill in the drug data for the given year, (all inputs after tot_mftr) 
+  This endpoint will insert a new row into the drug_year database with the 
+  given information, if the year is not specified it will default to the 
+  earliest recorded year not already filled. If a year is given it will 
+  only fill in the drug data for the given year, (all inputs after tot_mftr) 
   """
   sql = """ 
   select min(year)
@@ -52,7 +54,8 @@ def delete_entry(
   year: int = -1,
   drug_id: int = -1):
   """
-  This endpoint will delete entries under the drug id. If no year is specified it will automatically delete all for that entry,
+  This endpoint will delete entries under the drug id. If no year is specified
+  it will automatically delete all for that entry,
   if a year is given it will only delete information for that calendar year.
   """
   first_sql = """select drug_id from drug_year where drug_id = {}""", drug_id
