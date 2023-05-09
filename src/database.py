@@ -16,10 +16,8 @@ engine = sqlalchemy.create_engine(database_connection_url())
 
 # Use reflection to derive table schema. You can also code this in manually.
 metadata_obj = sqlalchemy.MetaData()
-movies = sqlalchemy.Table("movies", metadata_obj, autoload_with=engine)
+drug = sqlalchemy.Table("drug", metadata_obj, autoload_with=engine)
 
-lines = sqlalchemy.Table("lines", metadata_obj, autoload_with=engine)
+drug_year = sqlalchemy.Table("drug_year", metadata_obj, autoload_with=engine)
 
-characters = sqlalchemy.Table("characters", metadata_obj, autoload_with=engine)
-
-conversations = sqlalchemy.Table("conversations", metadata_obj, autoload_with=engine)
+maunfacturer = sqlalchemy.Table("manufacturer", metadata_obj, autoload_with=engine)
