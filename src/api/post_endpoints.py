@@ -7,8 +7,7 @@ router = APIRouter()
 
 class drug_yearJson(BaseModel):
   year: int
-  drug_id: int
-  total_dosge_units: float
+  total_dosage_units: float
   total_claims: float
   avg_spending_per_claim: float
   avg_spending_per_dosage_weighted: float
@@ -31,12 +30,26 @@ def add_entry(drug_id: int, drug_year: drug_yearJson):
   post_result = []
   json = []
   with db.engine.connect() as conn:
-    result = conn.execute(sqlalchemy.text(sql), drug_id)
+    result = conn.execute(sqlalchemy.text(sql), [{"x":drug_id}])
     if result.rowcount == 0:
       raise HTTPException(status_code=404, detail="drug not found")
-  
+
+  insertStmnt = """
+  insert into drug_year (year, drug_id, total_dosage_units, total_claims, 
+  avg_spending_per_claim, avg_spending_per_dosage_weighted, outlier)
+  values ( :year, :drug_id, :total_dosage_units, :total_claims,
+  :avg_spending_per_claim, :avg_spending_per_dosage_weighted, :outlier)
+  """
+
   with db.engine.connect() as conn:
-    post_result = conn.execute(db.drug.insert().values(drug_year))
+    post_result = conn.execute(sqlalchemy.text(insertStmnt), 
+      [{"year" : drug_year.year}, {"drug_id" : drug_id}, 
+      {"total_dosage_units" : drug_year.total_dosage_units}, 
+      {"total_claims" : drug_year.total_claims},
+      {"avg_spending_per_claim" : drug_year.avg_spending_per_claim}, 
+      {"avg_spending_per_dosage_weighted" : drug_year.avg_spending_per_dosage_weighted},
+      {"total_spending" : drug_year.total_spending}, 
+      {"outlier" : drug_year.outlier}])
     if post_result.rowcount == 0:
       raise HTTPException(status_code=404, detail="drug not found")
     for row in post_result:
@@ -70,7 +83,7 @@ def delete_entry(
     additional_string = " and year = {}", year 
   json = []
   with db.engine.connect() as conn:
-    result = conn.execute(sqlalchemy.text(sql), additional_string)
+    result = conn.execute(sqlalchemy.text(sql), [{"y":additional_string}])
     if result.rowcount == 0:
       raise HTTPException(status_code=404, detail="drug not found")
     for row in result:
