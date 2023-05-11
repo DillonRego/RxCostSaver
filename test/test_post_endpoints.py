@@ -9,7 +9,7 @@ drug_year_data ={'year' : 2017,
   'total_spending' : 0,
   'outlier' : 0}
 
-def dummy():
+def test_dummy():
     assert 1 == 1
 # def test_post_and_delete():
 #     # Test adding an entry
