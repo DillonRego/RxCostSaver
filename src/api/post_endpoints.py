@@ -7,6 +7,7 @@ router = APIRouter()
 
 class drug_yearJson(BaseModel):
   year: int
+  drug_id: int
   total_dosge_units: float
   total_claims: float
   avg_spending_per_claim: float
