@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.api import get_endpoints, post_endpoints
+import get_endpoints, post_endpoints
 
 description = """
 Movie API returns dialog statistics on top hollywood movies from decades past.
