@@ -1,20 +1,21 @@
 from fastapi import APIRouter, HTTPException
 from src import database as db
+from pydantic import BaseModel
 import sqlalchemy
 
 router = APIRouter()
 
-@router.post("/add_entry/{drug_id}", tags=["entry"])
-def add_entry(
-  year: int = 2017,
-  drug_id: int = -1,
-  total_dosge_units: float = 0,
-  total_claims: float = 0,
-  avg_spending_per_claim: float = 0,
-  avg_spending_per_dosage_weighted: float = 0,
-  total_spending: float = 0,
-  outlier: bool = True):
+class drug_yearJson(BaseModel):
+  year: int
+  total_dosge_units: float
+  total_claims: float
+  avg_spending_per_claim: float
+  avg_spending_per_dosage_weighted: float
+  total_spending: float
+  outlier: bool
 
+@router.post("/add_entry/{drug_id}", tags=["entry"])
+def add_entry(drug_id: int, drug_year: drug_yearJson):
   """
   This endpoint will insert a new row into the drug_year database with the 
   given information, if the year is not specified it will default to the 
@@ -32,15 +33,9 @@ def add_entry(
     result = conn.execute(sqlalchemy.text(sql), drug_id)
     if result.rowcount == 0:
       raise HTTPException(status_code=404, detail="drug not found")
-  year = max(year, result.year)
-  post_values = {'year' : year, 
-  'total_dosge_units': total_dosge_units, 'total_claims': total_claims, 
-  'avg_spending_per_claim' : avg_spending_per_claim, 
-  'avg_spending_per_dosage_weighted' : avg_spending_per_dosage_weighted,
-  'total_spending' : total_spending,
-  'outlier' : outlier}
+  
   with db.engine.connect() as conn:
-    post_result = conn.execute(db.drug.insert().values(post_values))
+    post_result = conn.execute(db.drug.insert().values(drug_year))
     if post_result.rowcount == 0:
       raise HTTPException(status_code=404, detail="drug not found")
     for row in post_result:
