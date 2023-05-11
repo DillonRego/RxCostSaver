@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-import database as db
+from src import database as db
 import sqlalchemy
 
 router = APIRouter()
