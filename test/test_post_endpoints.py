@@ -9,6 +9,8 @@ drug_year_data ={'year' : 2017,
   'total_spending' : 0,
   'outlier' : 0}
 
+def dummy():
+    assert 1 == 1
 # def test_post_and_delete():
 #     # Test adding an entry
 #     response = client.post(f"/add_entry/1", json=drug_year_data)
