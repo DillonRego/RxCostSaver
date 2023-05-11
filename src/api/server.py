@@ -1,21 +1,6 @@
 from fastapi import FastAPI
-from src import get_endpoints, post_endpoints
+from src.api import get_endpoints, post_endpoints, pkg_util
 
-description = """
-Movie API returns dialog statistics on top hollywood movies from decades past.
-
-## Characters
-
-You can:
-* **list characters with sorting and filtering options.**
-* **retrieve a specific character by id**
-
-## Movies
-
-You can:
-* **list movies with sorting and filtering options.**
-* **retrieve a specific movie by id**
-"""
 tags_metadata = [
     {
         "name": "claims",
@@ -41,7 +26,7 @@ tags_metadata = [
 
 app = FastAPI(
     title="RX API",
-    description=description,
+    description="",
     version="0.0.1",
     contact={
         "name": "Dillon Rego",
@@ -51,6 +36,8 @@ app = FastAPI(
 )
 app.include_router(get_endpoints.router)
 app.include_router(post_endpoints.router)
+app.include_router(pkg_util.router)
+
 
 @app.get("/")
 async def root():
