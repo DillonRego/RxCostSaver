@@ -36,7 +36,7 @@ def add_entry(drug_id: int, drug_year: drug_yearJson):
     total_claims = :total_claims,
     avg_spending_per_claim = :avg_spending_per_claim,
     avg_spending_per_dosage_weighted = :avg_spending_per_dosage_weighted,
-    outlier = :outlier
+    outlier = :outlier;
   """
   with db.engine.connect() as conn:
     try:
@@ -48,7 +48,7 @@ def add_entry(drug_id: int, drug_year: drug_yearJson):
       "avg_spending_per_dosage_weighted" : drug_year.avg_spending_per_dosage_weighted,
       "total_spending" : drug_year.total_spending, 
       "outlier" : drug_year.outlier}])
-      if result.rowcount == 1:
+      if result == None:
         print("Insert successful")
       else:
         print("Insert failed")
@@ -71,7 +71,7 @@ def delete_entry(
     delete from drug_year
     where drug_id = :d"""
   else:
-        sql = """
+    sql = """
     delete from drug_year
     where drug_id = :d and year = :y"""
 
@@ -79,7 +79,7 @@ def delete_entry(
   with db.engine.connect() as conn:
     try:
       result = conn.execute(sqlalchemy.text(sql), [{"d":drug_id, "y": year}])
-      if result.rowcount == 1:
+      if result.status_code == 200:
         print("Delete successful")
       else:
         print("Delete failed")
