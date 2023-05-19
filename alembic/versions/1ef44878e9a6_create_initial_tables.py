@@ -5,7 +5,7 @@ Revises:
 Create Date: 2023-05-17 20:26:00.487713
 
 """
-from alembic import op
+#from alembic import op
 import sqlalchemy
 from src import database as db
 
