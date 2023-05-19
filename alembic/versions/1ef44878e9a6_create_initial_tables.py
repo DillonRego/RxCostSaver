@@ -27,7 +27,8 @@ def upgrade() -> None:
   );
   
   insert into drug(brand_name, generic_name, manufacturer_id)
-  select "Brnd_Name" as brand_name, "Gnrc_Name" as generic_name, manufacturer_id
+  select "Brnd_Name" as brand_name, "Gnrc_Name" as generic_name, 
+  manufacturer_id
   from "Medicaid database"
   join manufacturer on manufacturer_name = "Mftr_Name"
   order by manufacturer_id, brand_name, generic_name;
@@ -44,9 +45,11 @@ def upgrade() -> None:
     Brnd_Name text not null,
     Gnrc_Name text not null,
     Tot_Mftr double precision null,
-    Mftr_Name text not null,    Chg_Avg_Spnd_Per_Dsg_Unt_20_21 double precision null,
+    Mftr_Name text not null,    
+    Chg_Avg_Spnd_Per_Dsg_Unt_20_21 double precision null,
     CAGR_Avg_Spnd_Per_Dsg_Unt_17_21 text null,
-    constraint Medicaid database_pkey primary key ("Brnd_Name", "Gnrc_Name", "Mftr_Name")
+    constraint Medicaid database_pkey primary key 
+    ("Brnd_Name", "Gnrc_Name", "Mftr_Name")
   ) tablespace pg_default;
 """
   with db.engine.connect() as conn:
