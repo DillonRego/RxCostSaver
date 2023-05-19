@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.api import get_endpoints, post_endpoints, pkg_util
+from src.api import get_endpoints, post_and_delete_endpoints, pkg_util
 
 tags_metadata = [
     {
@@ -35,7 +35,7 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 app.include_router(get_endpoints.router)
-app.include_router(post_endpoints.router)
+app.include_router(post_and_delete_endpoints.router)
 app.include_router(pkg_util.router)
 
 
